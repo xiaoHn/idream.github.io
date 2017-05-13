@@ -1,37 +1,163 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/xiaoHn/idream.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/xiaoHn/idream.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>i梦集团</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				border: none;
+			}
+			ul, li {
+				list-style: none;
+			}
+			
+			#loutiNav {
+				width: 30px;
+				position: fixed;
+				left: 40px;
+				top: 25%;
+				border: 1px solid black;
+			}
+			
+			#loutiNav li {
+				width: 30px;
+				height: 30px;
+				border-bottom: 1px dashed green;
+				line-height: 30px;
+				text-align: center;
+				font-size: 14px;
+				cursor: pointer;
+				position: relative;
+			}
+			
+			#loutiNav li span {
+				display: none;
+				width: 30px;
+				height: 30px;
+				background: darkred;
+				color: white;
+				font-size: 13px;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			#loutiNav li:hover span {
+				display: block;
+			}
+			
+			#loutiNav li span.active {
+				display: block;
+				background: white;
+				color: red;
+			}
+			
+			#header, #footer, #main {
+				font-size: 40px;
+				text-align: center;
+				width: 1000px;
+				margin: 0 auto;
+			}
+			#header, #footer {
+				height: 300px;
+				line-height: 300px;
+				background: #88ff66;
+			}
+			
+			.louti {
+				height: 500px;
+				line-height: 500px;
+			}
+			
+		</style>
+		<script src="js/jquery-1.12.3.js"></script>
+		<script>
+			$(function(){
+				
+				var isMoving = false; //是否点击了楼梯按钮后正在移动...
+				//点击楼层按钮
+				$("#loutiNav li").on("click", function(){
+					
+					//移动页面
+					//下标
+					var index = $(this).index();
+					var _top = $(".louti").eq(index).offset().top;
+					isMoving = true; //即将移动..
+					$("body, html").stop().animate({scrollTop: _top}, 1000, function(){
+						isMoving = false; //停止移动!
+					});
+					
+					//改变按钮的选中状态
+					$(this).find("span").removeClass().addClass("active")
+						   .parent().siblings("li").find("span").removeClass("active");
+					
+				})
+				
+				
+				//滚动页面, 改变按钮的选中状态
+				$(window).scroll(function(){
+					
+					//如果没有点击按钮后在移动, 则执行里面的代码
+					if (!isMoving) {
+					
+						var _scrollTop = $(document).scrollTop();
+						console.log(_scrollTop);
+						
+						//获取最后超过的div(.louti)的下标
+						var index = 0;
+						$(".louti").each(function(i, ele){
+							var _top = $(this).offset().top;
+							var _b = (_scrollTop + $(window).height()/2) > _top + $(this).height()/2;
+							if (_b) {
+								index = i;
+							}
+						})
+						
+						//把楼梯的按钮状态改变
+						$("#loutiNav li").eq(index).find("span").removeClass().addClass("active")
+						                 .parent().siblings().find("span").removeClass("active");
+						                 
+					}
+				})
+				
+			})
+		</script>
+	</head>
+	<body>
+		<div id="loutiNav">
+			<ul>
+				<li>1F<span class="active">服饰</span></li>
+				<li>2F<span>美妆</span></li>
+				<li>3F<span>手机</span></li>
+				<li>4F<span>家电</span></li>
+				<li>5F<span>数码</span></li>
+				<li>6F<span>运动</span></li>
+				<li>7F<span>居家</span></li>
+				<li>8F<span>母婴</span></li>
+				<li>9F<span>食品</span></li>
+				<li>10F<span>图书</span></li>
+				<li>11F<span>服务</span></li>				
+			</ul>
+		</div>
+		
+		<div id="header">爱梦 集团</div>
+		
+		<div id="main">
+			<div class="louti" style="background: #ff66cc;">1F服饰</div>
+			<div class="louti" style="background: #ff6666;">2F美妆</div>
+			<div class="louti" style="background: #6666cc;">3F手机</div>
+			<div class="louti" style="background: #cc66cc;">4F家电</div>
+			<div class="louti" style="background: #ffcccc;">5F数码</div>
+			<div class="louti" style="background: #cc33cc;">6F运动</div>
+			<div class="louti" style="background: #3366cc;">7F居家</div>
+			<div class="louti" style="background: #9933cc;">8F母婴</div>
+			<div class="louti" style="background: #9966cc;">9F食品</div>
+			<div class="louti" style="background: #f66fff;">10F图书</div>
+			<div class="louti" style="background: #88ffcc;">11F服务</div>
+		</div>
+		
+		<div id="footer">域名出售mail: haomooc@gmail.com</div>
+		
+	</body>
+</html>
